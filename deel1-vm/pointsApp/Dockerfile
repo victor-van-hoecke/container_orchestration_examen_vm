@@ -2,11 +2,15 @@ FROM ghcr.io/eslih/python:3.12.0-alpine
 
 WORKDIR /pointsApp
 
+# Install system dependencies
 RUN apk add --no-cache linux-headers g++
 
-COPY . .
-
+# Install Python dependencies
+COPY requirements.txt ./
 RUN pip install --upgrade pip \
-    && pip wheel --wheel-dir=/root/wheels -r requirements.txt
+    && pip install --no-cache-dir -r requirements.txt
+
+# Copy the application code
+COPY . .
 
 CMD ["python", "app.py"]
