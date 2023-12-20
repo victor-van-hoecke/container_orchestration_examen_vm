@@ -4,7 +4,7 @@ metadata:
   name: api
   namespace: exam-victorvanhoecke
   labels:
-    createdBy: "Nathan-Segers"
+    createdBy: "Victor-Van-Hoecke"
   
 spec:
   replicas: 1
@@ -24,18 +24,23 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - "k3d-k3s-default-agent-1"
+                - "k3d-k3s-default-agent-2"
       containers:
         - image: nathansegers/containers_23-24_december_api
           imagePullPolicy: Always
           name: api-demo
           ports:
             - containerPort: 8080
+          env:
+            - name: NAME
+              value: "YourName"  # Replace with the actual value you want to set
+            - name: DATE
+              value: "2023-12-20"
           resources: {}
           livenessProbe:
             httpGet:
               path: /
-              port: 80
+              port: 8080
             initialDelaySeconds: 15
             periodSeconds: 10
 ---
@@ -48,6 +53,6 @@ spec:
   selector:
     app: api
   ports:
-    - port: 80
+    - port: 8080
       targetPort: 8080
       nodePort: 30002

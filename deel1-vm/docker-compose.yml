@@ -5,6 +5,9 @@ services:
     build: ./pointsApp
     ports:
       - 5000:8080
+    environment:
+      FLASK_SECRET_KEY: a2V5
+      SECRET_KEY: SG9wZWxpamsgZ2VicnVpa3QgZWVuIHN0dWRlbnQgZGl0IG9vaXQgbnV0dGlnLg==
     volumes:
       - ./web/webapp/static:/app/webapp/static
     networks:
@@ -17,11 +20,12 @@ services:
   db:
     image: ghcr.io/eslih/postgres:16.1-alpine
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=examen
+      - POSTGRES_USER=student
+      - POSTGRES_PASSWORD=points
+      - POSTGRES_PORT=5432
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U student_user -d labo"]
+      test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
